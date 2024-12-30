@@ -45,7 +45,19 @@ class UserUseCase {
 
     const result = await this.userRepository.deleteUser(user.id);
 
-    return result;
+    return result || null;
+  }
+
+  async updateUserName(name: string, id: string, email: string): Promise<User> {
+    const user = await this.userRepository.findUserByEmail(email);
+
+    if (!user) {
+      throw new Error("User not exists");
+    }
+
+    const result = await this.userRepository.updateUserName(name, id);
+
+    return result || null;
   }
 }
 

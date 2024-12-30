@@ -2,6 +2,7 @@ import {
   Post,
   PostCreate,
   PostRepository,
+  PostUpdate,
 } from "../interfaces/posts.interface";
 import { UserRepository } from "../interfaces/users.interface";
 import { PostRepositoryPrisma } from "../repositories/post.repository";
@@ -58,7 +59,13 @@ class PostUseCase {
   async deletePost(id: string): Promise<Post> {
     const result = await this.postRepository.deletePost(id);
 
-    return result;
+    return result || null;
+  }
+
+  async updatePost({ id, title, body }: PostUpdate): Promise<Post> {
+    const result = await this.postRepository.updatePost({ id, title, body });
+
+    return result || null;
   }
 }
 

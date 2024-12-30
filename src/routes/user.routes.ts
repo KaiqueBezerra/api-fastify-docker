@@ -57,4 +57,28 @@ export async function userRoutes(fastify: FastifyInstance) {
       }
     }
   );
+
+  fastify.patch<{ Body: { name: string } }>(
+    "/",
+    { preHandler: authMiddleware },
+
+    async (request, reply) => {
+      const userEmail = request.headers["email"] as string;
+      const user = await userUseCase.findUserByEmail(userEmail);
+      const { name } = request.body;
+
+      if (user !== null) {
+        try {
+          const data = await userUseCase.updateUserName(
+            name,
+            user.id,
+            user.email
+          );
+          return reply.status(200).send(data);
+        } catch (error) {
+          return reply.status(500).send(error);
+        }
+      }
+    }
+  );
 }

@@ -3,6 +3,7 @@ import {
   Post,
   PostCreate,
   PostRepository,
+  PostUpdate,
 } from "../interfaces/posts.interface";
 
 class PostRepositoryPrisma implements PostRepository {
@@ -38,6 +39,15 @@ class PostRepositoryPrisma implements PostRepository {
 
   async deletePost(id: string): Promise<Post> {
     const result = await prisma.posts.delete({ where: { id } });
+
+    return result;
+  }
+
+  async updatePost({ title, body, id }: PostUpdate): Promise<Post> {
+    const result = await prisma.posts.update({
+      where: { id },
+      data: { title, body },
+    });
 
     return result;
   }

@@ -91,4 +91,27 @@ export async function postRoutes(fastify: FastifyInstance) {
       }
     }
   );
+
+  fastify.patch<{ Params: { id: string }, Body: { title: string, body: string } }>(
+    "/:id",
+    { preHandler: authMiddleware },
+    async (request, reply) => {
+      const { id } = request.params;
+      const { title, body } = request.body
+      const email = request.headers["email"] as string;
+      const user = await userUseCase.findUserByEmail(email);
+      const post = await postUseCase.findPostById(id);
+
+      if (post?.authorId === user?.id) {
+        try {
+          const data = await postUseCase.updatePost({ id, title, body });
+          return reply.status(200).send(data);
+        } catch (error) {
+          return reply.status(500).send(error);
+        }
+      } else {
+        return reply.status(401).send("Not authorized");
+      }
+    }
+  );
 }

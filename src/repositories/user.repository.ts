@@ -36,6 +36,12 @@ class UserRepositoryPrisma implements UserRepository {
 
     return result;
   }
+
+  async updateUserName(name: string, id: string): Promise<User> {
+    const result = await prisma.user.update({ where: { id }, data: { name } });
+
+    return result;
+  }
 }
 
 export { UserRepositoryPrisma };
