@@ -4,7 +4,7 @@ Antes de continuar, garanta que o Docker está instalado
 
 2. Rode o comando - npx prisma generate
 
-3. Após ter feito todas as alterações, no terminal linux rode o comando - chmod +x update.sh para dar permissão de execução do script
+3. No terminal linux rode o comando - chmod +x update.sh para dar permissão de execução do script
 
 4. Rode o comando - ./update.sh - isso vai parar os containers, remover as imagens antigas, rebuildar imagens e subir os containers novamente
 
