@@ -210,7 +210,7 @@ export async function userRoutes(fastify: FastifyInstance) {
     {
       preHandler: authMiddleware,
       schema: {
-        description: "Delete user by email.",
+        description: "Update user name.",
         tags: ["Users"],
         body: {
           type: "object",
@@ -219,7 +219,7 @@ export async function userRoutes(fastify: FastifyInstance) {
             name: { type: "string" },
           },
         },
-        summary: "Delete user by email.",
+        summary: "Update user name.",
         headers: {
           type: "object",
           required: ["email"],
