@@ -136,17 +136,19 @@ export async function postRoutes(fastify: FastifyInstance) {
     },
     async (request, reply) => {
       const { email } = request.params;
-      const user = await userUseCase.findUserByEmail(email);
 
-      if (user !== null) {
-        try {
-          const data = await postUseCase.findPostsByUser(user.email);
+      try {
+        const data = await postUseCase.findPostsByUser(email);
+
+        if (data) {
           return reply.status(200).send(data);
-        } catch (error) {
-          return reply.status(500).send(error);
+        } else {
+          return reply
+            .status(404)
+            .send({ error: "Posts não encontrados para este usuário" });
         }
-      } else {
-        return reply.status(404).send({ error: "Usuário não encontrado" });
+      } catch (error) {
+        return reply.status(500).send({ error: "Usuário não encontrado" });
       }
     }
   );

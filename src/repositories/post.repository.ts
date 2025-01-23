@@ -20,19 +20,29 @@ class PostRepositoryPrisma implements PostRepository {
   }
 
   async findPostsByUser(id: string): Promise<Post[] | null> {
-    const result = await prisma.posts.findMany({ where: { authorId: id } });
+    const result = await prisma.posts.findMany({
+      where: { authorId: id },
+      include: { author: true },
+      orderBy: { createdAt: "desc" },
+    });
 
     return result || null;
   }
 
   async findPostById(id: string): Promise<Post | null> {
-    const result = await prisma.posts.findFirst({ where: { id } });
+    const result = await prisma.posts.findFirst({
+      where: { id },
+      include: { author: true },
+    });
 
     return result || null;
   }
 
   async findAllPosts(): Promise<Post[] | null> {
-    const result = await prisma.posts.findMany();
+    const result = await prisma.posts.findMany({
+      include: { author: true },
+      orderBy: { createdAt: "desc" },
+    });
 
     return result || null;
   }
