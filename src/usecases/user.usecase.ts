@@ -1,6 +1,7 @@
 import {
   User,
   UserCreate,
+  UserGet,
   UserRepository,
 } from "../interfaces/users.interface";
 import { UserRepositoryPrisma } from "../repositories/user.repository";
@@ -26,6 +27,12 @@ class UserUseCase {
 
   async findUserByEmail(email: string): Promise<User | null> {
     const result = await this.userRepository.findUserByEmail(email);
+
+    return result || null;
+  }
+
+  async findUserById(id: string): Promise<UserGet | null> {
+    const result = await this.userRepository.findUserById(id);
 
     return result || null;
   }

@@ -84,8 +84,8 @@ export async function postRoutes(fastify: FastifyInstance) {
     }
   );
 
-  fastify.get<{ Params: { email: string } }>(
-    "/:email",
+  fastify.get<{ Params: { id: string } }>(
+    "/:id",
     {
       schema: {
         description: "Get all posts by user.",
@@ -94,12 +94,12 @@ export async function postRoutes(fastify: FastifyInstance) {
         params: {
           type: "object",
           properties: {
-            email: {
+            id: {
               type: "string",
-              description: "User email",
+              description: "User id",
             },
           },
-          required: ["email"],
+          required: ["id"],
         },
         response: {
           200: {
@@ -135,10 +135,10 @@ export async function postRoutes(fastify: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const { email } = request.params;
+      const { id } = request.params;
 
       try {
-        const data = await postUseCase.findPostsByUser(email);
+        const data = await postUseCase.findPostsByUser(id);
 
         if (data) {
           return reply.status(200).send(data);

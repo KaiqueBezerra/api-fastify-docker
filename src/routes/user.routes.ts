@@ -103,6 +103,53 @@ export async function userRoutes(fastify: FastifyInstance) {
     }
   );
 
+  fastify.get<{ Params: { id: string } }>(
+    "/user/:id",
+    {
+      schema: {
+        description: "Get user by id.",
+        tags: ["Users"],
+        summary: "Get user by id.",
+        response: {
+          200: {
+            type: "object",
+            properties: {
+              id: { type: "string" },
+              name: { type: "string" },
+            },
+          },
+          404: {
+            type: "object",
+            properties: {
+              message: { type: "string" },
+            },
+          },
+          500: {
+            type: "object",
+            properties: {
+              message: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+
+      try {
+        const data = await userUseCase.findUserById(id);
+
+        if (!data) {
+          return reply.status(404).send({ message: "User not found" });
+        }
+
+        return reply.status(200).send(data);
+      } catch (error) {
+        return reply.status(500).send(error);
+      }
+    }
+  );
+
   fastify.get(
     "/",
     {

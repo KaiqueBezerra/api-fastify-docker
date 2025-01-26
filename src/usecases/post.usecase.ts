@@ -32,8 +32,8 @@ class PostUseCase {
     return result;
   }
 
-  async findPostsByUser(email: string): Promise<Post[] | null> {
-    const user = await this.userRepository.findUserByEmail(email);
+  async findPostsByUser(id: string): Promise<Post[] | null> {
+    const user = await this.userRepository.findUserById(id);
 
     if (!user) {
       throw new Error("User not exists");
